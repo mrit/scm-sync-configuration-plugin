@@ -17,6 +17,7 @@ public abstract class AbstractMigrator<TFROM extends ScmSyncConfigurationPOJO, T
 	public static final String SCM_NO_USER_COMMIT_MESSAGE = "noUserCommitMessage";
     public static final String SCM_DISPLAY_STATUS = "displayStatus";
     public static final String SCM_COMMIT_MESSAGE_PATTERN = "commitMessagePattern";
+	public static final String SCM_DEFAULT_BRANCH = "defaultBranch";
     public static final String SCM_MANUAL_INCLUDES = "manualSynchronizationIncludes";
 
     private static final Logger LOGGER = Logger.getLogger(AbstractMigrator.class.getName());

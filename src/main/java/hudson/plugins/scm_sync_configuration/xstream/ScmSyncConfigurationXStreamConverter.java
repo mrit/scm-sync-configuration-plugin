@@ -85,6 +85,12 @@ public class ScmSyncConfigurationXStreamConverter implements Converter {
             writer.endNode();
         }
 
+		if(plugin.getDefaultBranch() != null){
+			writer.startNode(AbstractMigrator.SCM_DEFAULT_BRANCH);
+			writer.setValue(plugin.getDefaultBranch());
+			writer.endNode();
+		}
+
         if(plugin.getManualSynchronizationIncludes() != null){
             writer.startNode(AbstractMigrator.SCM_MANUAL_INCLUDES);
             for(String include : plugin.getManualSynchronizationIncludes()){

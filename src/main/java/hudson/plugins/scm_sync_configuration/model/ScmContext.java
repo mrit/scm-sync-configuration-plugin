@@ -9,15 +9,19 @@ public class ScmContext {
 	private String scmRepositoryUrl;
 	private SCM scm;
     private String commitMessagePattern;
+	private String defaultBranch = "master";
 
     public ScmContext(SCM _scm, String _scmRepositoryUrl){
-        this(_scm, _scmRepositoryUrl, "[message]");
+        this(_scm, _scmRepositoryUrl, "[message]" , null);
     }
 
-	public ScmContext(SCM _scm, String _scmRepositoryUrl, String _commitMessagePattern){
+	public ScmContext(SCM _scm, String _scmRepositoryUrl, String _commitMessagePattern, String _defaultBranch){
 		this.scm = _scm;
 		this.scmRepositoryUrl = _scmRepositoryUrl;
         this.commitMessagePattern = _commitMessagePattern;
+		if (_defaultBranch != null) {
+			this.defaultBranch = _defaultBranch;
+		}
 	}
 
 	public String getScmRepositoryUrl() {
@@ -31,6 +35,8 @@ public class ScmContext {
     public String getCommitMessagePattern(){
         return commitMessagePattern;
     }
+
+    public String getDefaultBranch() { return defaultBranch; }
 	
 	@Override
 	public String toString() {

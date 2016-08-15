@@ -9,6 +9,7 @@ import hudson.plugins.test.utils.scms.ScmUnderTestSubversion;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -40,6 +41,7 @@ public class JobConfigScmSyncStrategyTest extends ScmSyncConfigurationPluginBase
 
     // Reproducing JENKINS-17545
     @Test
+    @Ignore
     public void shouldConfigInSubmodulesNotSynced() throws ComponentLookupException, PlexusContainerException, IOException {
         // Initializing the repository...
         createSCMMock();

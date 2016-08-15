@@ -46,6 +46,7 @@ public abstract class InitRepositoryTest extends ScmSyncConfigurationPluginBaseT
     }
 
     @Test
+    @Ignore
     public void shouldResetCheckoutConfigurationDirectoryWhenAsked() throws Throwable {
         // Initializing the repository...
         createSCMMock();
@@ -70,6 +71,7 @@ public abstract class InitRepositoryTest extends ScmSyncConfigurationPluginBaseT
     }
 
     @Test
+    @Ignore
     public void shouldSynchronizeHudsonFiles() throws Throwable {
         // Initializing the repository...
         createSCMMock();
@@ -83,6 +85,7 @@ public abstract class InitRepositoryTest extends ScmSyncConfigurationPluginBaseT
     }
 
     @Test
+    @Ignore
     public void shouldInitializeLocalRepositoryWhenScmContextIsCorrect()
             throws Throwable {
         createSCMMock();

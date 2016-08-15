@@ -78,6 +78,7 @@ public class ScmSyncConfigurationPlugin extends Plugin{
                     return !( scmSyncStrategy instanceof ManualIncludesScmSyncStrategy );
                 }
             }));
+    private String defaultBranch = "master";
 
     public void purgeFailLogs() {
         business.purgeFailLogs();
@@ -163,6 +164,7 @@ public class ScmSyncConfigurationPlugin extends Plugin{
         this.noUserCommitMessage = pojo.isNoUserCommitMessage();
         this.displayStatus = pojo.isDisplayStatus();
         this.commitMessagePattern = pojo.getCommitMessagePattern();
+        this.defaultBranch = pojo.getDefaultBranch();
         this.manualSynchronizationIncludes = pojo.getManualSynchronizationIncludes();
     }
 
@@ -200,6 +202,7 @@ public class ScmSyncConfigurationPlugin extends Plugin{
         this.noUserCommitMessage = formData.getBoolean("noUserCommitMessage");
         this.displayStatus = formData.getBoolean("displayStatus");
         this.commitMessagePattern = req.getParameter("commitMessagePattern");
+        this.defaultBranch = req.getParameter("defaultBranch");
 
         String oldScmRepositoryUrl = this.scmRepositoryUrl;
         String scmType = req.getParameter("scm");
@@ -359,7 +362,7 @@ public class ScmSyncConfigurationPlugin extends Plugin{
     }
 
     public ScmContext createScmContext(){
-        return new ScmContext(this.scm, this.scmRepositoryUrl, this.commitMessagePattern);
+        return new ScmContext(this.scm, this.scmRepositoryUrl, this.commitMessagePattern, this.defaultBranch);
     }
 
     public boolean shouldDecorationOccursOnURL(String url){
@@ -383,6 +386,14 @@ public class ScmSyncConfigurationPlugin extends Plugin{
         }
         // Strategy not found !
         return null;
+    }
+
+    public String getDefaultBranch() {
+        return this.defaultBranch;
+    }
+
+    public void setDefaultBranch(String defaultBranch) {
+        this.defaultBranch = defaultBranch;
     }
 
     public boolean isNoUserCommitMessage() {

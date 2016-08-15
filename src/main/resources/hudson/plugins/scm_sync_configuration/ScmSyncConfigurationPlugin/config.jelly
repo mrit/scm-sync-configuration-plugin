@@ -33,6 +33,9 @@
     <f:entry title="${%Commit message pattern}" help="${rootUrl}/plugin/scm-sync-configuration/help/commitMessagePattern-help.html">
         <f:textbox name="commitMessagePattern" value="${it.commitMessagePattern}" />
     </f:entry>
+    <f:entry title="${%Default branch, blank is master}">
+        <f:textbox name="defaultBranch" value="${it.defaultBranch}" />
+    </f:entry>
 
     <!--
     Help url for manualSynchronizationIncludes field is a jelly script and not a html file

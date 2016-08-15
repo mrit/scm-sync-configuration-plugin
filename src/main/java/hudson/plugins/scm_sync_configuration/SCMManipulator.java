@@ -5,6 +5,7 @@ import hudson.plugins.scm_sync_configuration.scms.SCM;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
+import org.apache.maven.scm.ScmVersion;
 import org.apache.maven.scm.command.add.AddScmResult;
 import org.apache.maven.scm.command.checkin.CheckInScmResult;
 import org.apache.maven.scm.command.checkout.CheckOutScmResult;
@@ -34,6 +35,7 @@ public class SCMManipulator {
     private final ScmManager scmManager;
     private ScmRepository scmRepository = null;
     private String scmSpecificFilename = null;
+    private String defaultBranch;
 
     public SCMManipulator(ScmManager _scmManager) {
         this.scmManager = _scmManager;
@@ -48,6 +50,7 @@ public class SCMManipulator {
     public boolean scmConfigurationSettledUp(ScmContext scmContext, boolean resetScmRepository){
         String scmRepositoryUrl = scmContext.getScmRepositoryUrl();
         SCM scm = scmContext.getScm();
+        this.defaultBranch = scmContext.getDefaultBranch();
         if(scmRepositoryUrl == null || scm == null){
             return false;
         }
@@ -77,7 +80,27 @@ public class SCMManipulator {
     }
 
     public UpdateScmResult update(File root) throws ScmException {
-        return this.scmManager.update(scmRepository, new ScmFileSet(root));
+        if (this.defaultBranch != null) {
+            scmManager.branch(this.scmRepository, new ScmFileSet(root), this.defaultBranch);
+            return this.scmManager.update(scmRepository, new ScmFileSet(root), new ScmVersion() {
+                @Override
+                public String getType() {
+                    return "Branch";
+                }
+
+                @Override
+                public String getName() {
+                    return defaultBranch;
+                }
+
+                @Override
+                public void setName(String s) {
+
+                }
+            });
+        } else {
+            return this.scmManager.update(scmRepository, new ScmFileSet(root));
+        }
     }
     public boolean checkout(File checkoutDirectory){
         boolean checkoutOk = false;
@@ -86,10 +109,32 @@ public class SCMManipulator {
             return checkoutOk;
         }
 
+        ScmFileSet scmFileSet = new ScmFileSet(checkoutDirectory);
         // Checkouting sources
         LOGGER.fine("Checking out SCM files into ["+checkoutDirectory.getAbsolutePath()+"] ...");
         try {
-            CheckOutScmResult result = scmManager.checkOut(this.scmRepository, new ScmFileSet(checkoutDirectory));
+            CheckOutScmResult result = null;
+            if (this.defaultBranch != null) {
+                scmManager.branch(this.scmRepository, scmFileSet, this.defaultBranch);
+                result = scmManager.checkOut(this.scmRepository, scmFileSet, new ScmVersion() {
+                    @Override
+                    public String getType() {
+                        return "Branch";
+                    }
+
+                    @Override
+                    public String getName() {
+                        return defaultBranch;
+                    }
+
+                    @Override
+                    public void setName(String s) {
+
+                    }
+                });
+            } else {
+                result = scmManager.checkOut(this.scmRepository, new ScmFileSet(checkoutDirectory));
+            }
             if(!result.isSuccess()){
                 LOGGER.severe("[checkout] Error during checkout : "+result.getProviderMessage()+" || "+result.getCommandOutput());
                 return checkoutOk;
@@ -238,7 +283,28 @@ public class SCMManipulator {
 
         // Let's commit everything !
         try {
-            CheckInScmResult result = this.scmManager.checkIn(this.scmRepository, fileSet, commitMessage);
+            CheckInScmResult result = null;
+            if (this.defaultBranch != null) {
+                scmManager.branch(this.scmRepository, fileSet, this.defaultBranch);
+                result = this.scmManager.checkIn(this.scmRepository, fileSet, new ScmVersion() {
+                    @Override
+                    public String getType() {
+                        return "Branch";
+                    }
+
+                    @Override
+                    public String getName() {
+                        return defaultBranch;
+                    }
+
+                    @Override
+                    public void setName(String s) {
+
+                    }
+                }, commitMessage);
+            } else {
+                result = this.scmManager.checkIn(this.scmRepository, fileSet, commitMessage);
+            }
             if(!result.isSuccess()){
                 LOGGER.severe("[checkinFiles] Problem during SCM commit : "+result.getCommandOutput());
                 return checkinOk;

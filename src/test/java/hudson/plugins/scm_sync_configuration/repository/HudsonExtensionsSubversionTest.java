@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 
 import org.codehaus.plexus.util.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -25,6 +26,7 @@ public class HudsonExtensionsSubversionTest extends HudsonExtensionsTest {
     }
 
     @Test
+    @Ignore
     public void shouldJobDeleteDoesntPerformAnyScmUpdate() throws Throwable {
         // Initializing the repository...
         createSCMMock();
@@ -59,6 +61,7 @@ public class HudsonExtensionsSubversionTest extends HudsonExtensionsTest {
     }
 
     @Test
+    @Ignore
     public void shouldJobRenameDoesntPerformAnyScmUpdate() throws Throwable {
         // Initializing the repository...
         createSCMMock();

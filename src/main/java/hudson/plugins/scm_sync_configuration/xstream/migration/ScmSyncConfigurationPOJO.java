@@ -19,6 +19,8 @@ public interface ScmSyncConfigurationPOJO {
 	public void setDisplayStatus(boolean displayStatus);
     public String getCommitMessagePattern();
     public void setCommitMessagePattern(String commitMessagePattern);
+	public String getDefaultBranch();
+	public void setDefaultBranch(String defaultBranch);
     public List<String> getManualSynchronizationIncludes();
     public void setManualSynchronizationIncludes(List<String> manualSynchronizationIncludes);
 }

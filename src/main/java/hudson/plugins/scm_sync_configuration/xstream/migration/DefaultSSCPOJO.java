@@ -11,6 +11,7 @@ public class DefaultSSCPOJO implements ScmSyncConfigurationPOJO {
 	private boolean noUserCommitMessage;
 	private boolean displayStatus;
     private String commitMessagePattern;
+	private String defaultBranch;
     private List<String> manualSynchronizationIncludes;
 	
 	public String getScmRepositoryUrl() {
@@ -45,6 +46,10 @@ public class DefaultSSCPOJO implements ScmSyncConfigurationPOJO {
     public void setCommitMessagePattern(String commitMessagePattern) {
         this.commitMessagePattern = commitMessagePattern;
     }
+
+    public String getDefaultBranch() { return defaultBranch; }
+
+    public void setDefaultBranch(String defaultBranch) { this.defaultBranch = defaultBranch; }
 
     public void setManualSynchronizationIncludes(List<String> _manualSynchronizationIncludes){
         this.manualSynchronizationIncludes = _manualSynchronizationIncludes;
