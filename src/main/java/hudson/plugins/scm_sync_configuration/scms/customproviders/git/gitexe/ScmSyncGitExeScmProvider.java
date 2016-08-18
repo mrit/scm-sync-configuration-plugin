@@ -2,11 +2,18 @@ package hudson.plugins.scm_sync_configuration.scms.customproviders.git.gitexe;
 
 import org.apache.maven.scm.provider.git.command.GitCommand;
 import org.apache.maven.scm.provider.git.gitexe.GitExeScmProvider;
+import org.apache.maven.scm.provider.git.gitexe.command.checkout.GitCheckOutCommand;
 
 /**
  * Try to fix those very broken maven scm git commands. We should really move to using the git-client plugin.
  */
 public class ScmSyncGitExeScmProvider extends GitExeScmProvider {
+
+    @Override
+    protected GitCommand getCheckOutCommand()
+    {
+        return new ScmSyncGitCheckoutCommand();
+    }
 
     @Override
     protected GitCommand getCheckInCommand() {

@@ -85,8 +85,8 @@ public class ScmSyncConfigurationBusiness {
                     LOGGER.warning("Directory ["+ checkoutScmDirectory.getAbsolutePath() +"] cannot be created !");
                 }
             }
-
             this.checkoutSucceeded = this.scmManipulator.checkout(this.checkoutScmDirectory);
+            //this.checkoutSucceeded = this.scmManipulator.checkout(this.checkoutScmDirectory);
             if(this.checkoutSucceeded){
                 LOGGER.info("SCM repository initialization done.");
             }
