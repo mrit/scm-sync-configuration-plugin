@@ -10,12 +10,6 @@ import org.apache.maven.scm.provider.git.gitexe.command.checkout.GitCheckOutComm
 public class ScmSyncGitExeScmProvider extends GitExeScmProvider {
 
     @Override
-    protected GitCommand getCheckOutCommand()
-    {
-        return new ScmSyncGitCheckoutCommand();
-    }
-
-    @Override
     protected GitCommand getCheckInCommand() {
         // Push to origin (fcamblor)
         // Handle quoted output from git, and fix relative path computations SCM-695, SCM-772

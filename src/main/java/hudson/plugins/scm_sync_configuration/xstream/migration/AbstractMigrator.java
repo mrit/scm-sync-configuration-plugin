@@ -42,6 +42,7 @@ public abstract class AbstractMigrator<TFROM extends ScmSyncConfigurationPOJO, T
 		boolean noUserCommitMessage = false;
 		boolean displayStatus = true;
         String commitMessagePattern = "[message]";
+		String defaultBranch = "master";
         List<String> manualIncludes = null;
 		
 		while(reader.hasMoreChildren()){
@@ -57,7 +58,9 @@ public abstract class AbstractMigrator<TFROM extends ScmSyncConfigurationPOJO, T
 				scmContent = reader.getValue();
             } else if(SCM_COMMIT_MESSAGE_PATTERN.equals(reader.getNodeName())){
                 commitMessagePattern = reader.getValue();
-            } else if(SCM_MANUAL_INCLUDES.equals(reader.getNodeName())){
+			} else if(SCM_DEFAULT_BRANCH.equals(reader.getNodeName())){
+				defaultBranch = reader.getValue();
+			} else if(SCM_MANUAL_INCLUDES.equals(reader.getNodeName())){
                 manualIncludes = new ArrayList<String>();
                 while(reader.hasMoreChildren()){
                     reader.moveDown();
@@ -78,6 +81,7 @@ public abstract class AbstractMigrator<TFROM extends ScmSyncConfigurationPOJO, T
 		pojo.setNoUserCommitMessage(noUserCommitMessage);
 		pojo.setDisplayStatus(displayStatus);
         pojo.setCommitMessagePattern(commitMessagePattern);
+		pojo.setDefaultBranch(defaultBranch);
         pojo.setManualSynchronizationIncludes(manualIncludes);
 		
 		return pojo;

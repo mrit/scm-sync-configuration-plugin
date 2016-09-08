@@ -2,6 +2,7 @@ package hudson.plugins.scm_sync_configuration;
 
 import hudson.plugins.scm_sync_configuration.model.ScmContext;
 import hudson.plugins.scm_sync_configuration.scms.SCM;
+import org.apache.maven.scm.ScmBranch;
 import org.apache.maven.scm.ScmException;
 import org.apache.maven.scm.ScmFile;
 import org.apache.maven.scm.ScmFileSet;
@@ -79,9 +80,6 @@ public class SCMManipulator {
     }
 
     public UpdateScmResult update(File root) throws ScmException {
-//        if (this.defaultBranch != null) {
-//            scmManager.branch(this.scmRepository, new ScmFileSet(root), this.defaultBranch);
-//        }
         return this.scmManager.update(scmRepository, new ScmFileSet(root));
     }
     public boolean checkout(File checkoutDirectory){
@@ -96,10 +94,11 @@ public class SCMManipulator {
         LOGGER.fine("Checking out SCM files into ["+checkoutDirectory.getAbsolutePath()+"] ...");
         try {
             CheckOutScmResult result = null;
-//            if (this.defaultBranch != null) {
-//                scmManager.branch(this.scmRepository, scmFileSet, this.defaultBranch);
-//            }
-            result = scmManager.checkOut(this.scmRepository, new ScmFileSet(checkoutDirectory));
+            if (this.defaultBranch != null) {
+                result = scmManager.checkOut(this.scmRepository, new ScmFileSet(checkoutDirectory), new ScmBranch(this.defaultBranch));
+            } else {
+                result = scmManager.checkOut(this.scmRepository, new ScmFileSet(checkoutDirectory));
+            }
             if(!result.isSuccess()){
                 LOGGER.severe("[checkout] Error during checkout : "+result.getProviderMessage()+" || "+result.getCommandOutput());
                 return checkoutOk;
@@ -249,7 +248,6 @@ public class SCMManipulator {
         // Let's commit everything !
         try {
             CheckInScmResult result = null;
-//            scmManager.branch(this.scmRepository, fileSet, this.defaultBranch);
             result = this.scmManager.checkIn(this.scmRepository, fileSet, commitMessage);
             if(!result.isSuccess()){
                 LOGGER.severe("[checkinFiles] Problem during SCM commit : "+result.getCommandOutput());
